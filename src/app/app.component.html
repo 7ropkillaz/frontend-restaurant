@@ -1,74 +1,65 @@
-<button mat-raised-button (click)="addColumn()"> Add column </button>
-<button mat-raised-button (click)="remove()"> Remove </button>
-<mat-form-field>
-  <mat-label>Search</mat-label>
-  <input matInput (keyup)="applySearch($event)" >
-</mat-form-field>
+<table #tableOfDishes mat-table [dataSource]="listDishes" class="mat-elevation-z8">
 
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
 
-<input type="text" [(ngModel)]="name" />
-
-<input type="text"  [(ngModel)]="price" />
-<input type="text"  [(ngModel)]="category" />
-<button (click)="addDish()">Add</button>
-
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-
-
-  <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()"
-                    [aria-label]="checkboxLabel()" class="home">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)"
-                    [aria-label]="checkboxLabel(row)">
-      </mat-checkbox>
-    </td>
+  <!-- id Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> Id </th>
+    <td mat-cell *matCellDef="let dish"> {{dish.id}} </td>
   </ng-container>
-
-
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <td mat-cell *matCellDef="let dish"> {{dish.name}} </td>
   </ng-container>
 
-  <!-- Weight Column -->
+  <!-- Price Column -->
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef> Price </th>
-    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+    <td mat-cell *matCellDef="let dish"> {{dish.price}} </td>
   </ng-container>
 
-  <!-- Symbol Column -->
+  <!-- Category Column -->
   <ng-container matColumnDef="category">
     <th mat-header-cell *matHeaderCellDef> Category </th>
-    <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+    <td mat-cell *matCellDef="let dish"> {{dish.category}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="displayedColumns">
-    <th mat-header-cell *matHeaderCellDef> {{displayedColumns}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[displayedColumns]}} </td>
-  </ng-container>
-
-  <!-- Item Description Column -->
-  <ng-container matColumnDef="name-description">
-    <th mat-header-cell *matHeaderCellDef> Name of the item purchased </th>
-  </ng-container>
-
- <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-  <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"
-      (click)="selection.toggle(row)">
-  </tr>
-
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
 </table>
+
+<div class="inputsForm">
+    <mat-form-field class="example-full-width">
+      <mat-label>id</mat-label>
+      <input matInput placeholder="Enter id" [(ngModel)]="id">
+    </mat-form-field>
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>name</mat-label>
+      <input matInput placeholder="Enter name" [(ngModel)]="name">
+    </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>price</mat-label>
+    <input matInput placeholder="Enter price" [(ngModel)]="price">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>category</mat-label>
+    <input matInput placeholder="Enter category" [(ngModel)]="category">
+  </mat-form-field>
+
+</div>
+<button (click)="addDish()" mat-fab color="primary">Add</button>
+
+<button (click)="updateDish()" mat-fab color="primary">Update</button>
+
+<button (click)="removeDishById()" mat-fab color="primary">Remove</button>
+
+
+
 
