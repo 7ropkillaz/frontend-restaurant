@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
       {id: 1, name: 'purump', category: 'dumdump', price:281 }
     ];
     this.listDishes=dataFromServer;
-
   }
 
   removeDishById() {
@@ -43,16 +42,16 @@ export class AppComponent implements OnInit {
         console.log(this.id);
         this.tableOfDishes.renderRows();
       }
-
     }
   }
 
   addDish(){
     let dish: Dish={id:this.id, name:this.name, price:this.price, category:this.category };
+    if(this.id!=null){
     this.listDishes.push(dish);
     console.log(this.listDishes);
     this.tableOfDishes.renderRows();
-
+    }
   }
 
   updateDish(){
@@ -66,5 +65,4 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
 }
