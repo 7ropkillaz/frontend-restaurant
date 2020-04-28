@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
-    //todo посмотреть и запомнить жизненный цикл комп-ты
+    //todo посмотреть и запомнить жизненный цикл компоты
     let dataFromServer: Dish[] = [
       {id: 1, name: 'purump', category: 'dumdump', price:281 }
     ];
