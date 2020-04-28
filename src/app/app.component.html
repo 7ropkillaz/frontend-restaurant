@@ -40,7 +40,7 @@
 
     <mat-form-field class="example-full-width">
       <mat-label>name</mat-label>
-      <input matInput placeholder="Enter name" [(ngModel)]="name" type="string">
+      <input matInput placeholder="Enter name" [(ngModel)]="name" type="string" >
     </mat-form-field>
 
   <mat-form-field class="example-full-width">
@@ -50,8 +50,15 @@
 
   <mat-form-field class="example-full-width">
     <mat-label>category</mat-label>
-    <input matInput placeholder="Enter category" [(ngModel)]="category" type="string">
+    <input matInput placeholder="Enter category" [(ngModel)]="category" type="string"  [formControl]="myControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
+
 
 </div>
 <button (click)="addDish()" mat-fab color="primary">Add</button>
