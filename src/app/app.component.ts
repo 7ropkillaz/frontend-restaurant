@@ -23,77 +23,104 @@ export class AppComponent implements OnInit {
   tableOfDishes: MatTable<any>;
   listDishes: Dish[] = [];
   myControl = new FormControl();
-  options: string[]=[];
-  columnsToDisplay = ['id', 'name', 'price', 'category'];
+  options: string[] = [];
+  columnsToDisplay = ['id', 'name', 'price', 'category', 'option'];
   id: number;
   name: string;
   price: number;
   category: string;
-  constructor(private dataService: DataService, private httpService:HttpService){}
+
+  constructor(private dataService: DataService, private httpService: HttpService) {
+  }
 
 
   ngOnInit(): void {
     //todo посмотреть и запомнить жизненный цикл компоты
     let dataFromServer: Dish[] = [
-      {id: 1, name: 'purump', category: 'dumdump', price:281 }
+      {id: 1, name: 'purump', category: 'dumdump', price: 281}
     ];
-    this.options=this.dataService.getData();
-    this.listDishes=dataFromServer;
-    this.httpService.getData().subscribe((data:Dish[]) => {
+    this.options = this.dataService.getData();
+    this.listDishes = dataFromServer;
+    this.httpService.getData().subscribe((data: Dish[]) => {
       console.log(data);
-      this.listDishes=data
+      this.listDishes = data
     });
-
   }
 
-  removeDishById() {
-    for (let i = 0; i <this.listDishes.length ; i++) {
-      if(this.listDishes[i].id==this.id){
-        this.listDishes.splice(i,1);
-        console.log(this.id);
-        this.httpService.deleteData(this.id.toString()).subscribe(
-          (data:Dish)=>{
+  removeDishById(id: number) {
+    for (let i = 0; i < this.listDishes.length; i++) {
+      if (this.listDishes[i].id == id) {
+        this.listDishes.splice(i, 1);
+        console.log(id);
+        this.httpService.deleteData(id.toString()).subscribe(
+          (data: Dish) => {
             console.log(data);
           }
-        )
+        );
         this.tableOfDishes.renderRows();
       }
     }
   }
 
-  addDish(){
-    let dish: Dish={id:this.id, name:this.name, price:this.price, category:this.category };
-    if(this.id!=null && this.id>0 && this.price>0 && this.name!="" && this.name!=null && this.category!=null){
-      for (let i = 0; i <this.listDishes.length ; i++) {
-        if(this.listDishes[i].id == this.id){
+  addDish() {
+    let dish: Dish = {id: this.id, name: this.name, price: this.price, category: this.category};
+    if (this.id != null && this.id > 0 && this.price > 0 && this.name != "" && this.name != null && this.category != null) {
+      for (let i = 0; i < this.listDishes.length; i++) {
+        if (this.listDishes[i].id == this.id) {
           alert("Введены некорректные данные");
           return;
         }
       }
-    this.listDishes.push(dish);
-    this.dataService.addData(this.category);
-    this.tableOfDishes.renderRows();
-    this.httpService.addData(dish).subscribe(
-      ()=>{console.log("OK!")},
-      error1 => {alert("ERROR!!!")}
-    );
-    console.log(this.listDishes);
-    }
-    else (alert("Введены некорректные данные"))
+      this.listDishes.push(dish);
+      this.dataService.addData(this.category);
+      this.tableOfDishes.renderRows();
+      this.httpService.addData(dish).subscribe(
+        () => {
+          console.log("OK!")
+        },
+        error1 => {
+          alert("ERROR!!!")
+        }
+      );
+      this.id=null;
+      this.name="";
+      this.price=null;
+      this.category="";
+      console.log(this.listDishes);
+    } else (alert("Введены некорректные данные"))
   }
 
-  updateDish(){
-    for (let i = 0; i <this.listDishes.length ; i++) {
+  saveDish() {
+    for (let i = 0; i < this.listDishes.length; i++) {
       if (this.listDishes[i].id == this.id) {
         let temp: Dish = {id: this.id, name: this.name, price: this.price, category: this.category};
         this.listDishes.splice(i, 1);
         this.listDishes.push(temp);
-        this.httpService.updateData(temp).subscribe(
-          ()=>{console.log("OK!")},
-          error1 => {alert("ERROR!!!")}
+        this.httpService.updateData(temp, this.id.toString()).subscribe(
+          () => {
+            console.log("OK!")
+          },
+          error1 => {
+            alert("ERROR!!!")
+          }
         );
+        this.id=null;
+        this.name="";
+        this.price=null;
+        this.category="";
         console.log(this.listDishes);
         this.tableOfDishes.renderRows();
+      }
+    }
+  }
+
+  editDish(id: number) {
+    for (let i = 0; i < this.listDishes.length; i++) {
+      if (this.listDishes[i].id == id) {
+        this.id=this.listDishes[i].id;
+        this.name = this.listDishes[i].name;
+        this.category = this.listDishes[i].category;
+        this.price = this.listDishes[i].price
       }
     }
   }

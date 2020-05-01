@@ -16,7 +16,7 @@ export class HttpService{
   deleteData(id: string){
     return this.http.delete('http://localhost:8080/delete/'+ id)
   }
-  updateData(dish:Dish){
-    return this.http.put('http://localhost:8080/update', dish )
+  updateData(dish:Dish, id: string){
+    return this.http.put('http://localhost:8080/update/'+id, dish )
   }
 }
