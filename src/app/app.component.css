@@ -18,9 +18,13 @@ button {
   width: 100%;
 }
 .buttons2{
-  margin: -91px 0px 2px 750px;
+  margin: -91px 0px 2px 640px;
 }
 .mat-form-field-appearance-legacy {
   padding-bottom: 1.25em;
   margin: 3px;
+}
+
+.inputID{
+  display: none;
 }

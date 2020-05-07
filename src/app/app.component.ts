@@ -64,30 +64,36 @@ export class AppComponent implements OnInit {
 
   addDish() {
     let dish: Dish = {id: this.id, name: this.name, price: this.price, category: this.category};
-    if (this.id != null && this.id > 0 && this.price > 0 && this.name != "" && this.name != null && this.category != null) {
-      for (let i = 0; i < this.listDishes.length; i++) {
-        if (this.listDishes[i].id == this.id) {
-          alert("Введены некорректные данные");
-          return;
-        }
-      }
-      this.listDishes.push(dish);
-      this.dataService.addData(this.category);
-      this.tableOfDishes.renderRows();
-      this.httpService.addData(dish).subscribe(
-        () => {
-          console.log("OK!")
-        },
-        error1 => {
-          alert("ERROR!!!")
-        }
-      );
-      this.id=null;
-      this.name="";
-      this.price=null;
-      this.category="";
-      console.log(this.listDishes);
-    } else (alert("Введены некорректные данные"))
+    if(this.id != null && this.id > 0){
+      if(this.price > 0){
+        if(this.name != "" && this.name != null){
+          if(this.category != null && this.category!=""){
+            for (let i = 0; i < this.listDishes.length; i++) {
+              if (this.listDishes[i].id == this.id) {
+                alert("Такой id уже существует");
+                return;
+              }
+
+            }  this.listDishes.push(dish);
+            this.dataService.addData(this.category);
+            this.tableOfDishes.renderRows();
+            this.httpService.addData(dish).subscribe(
+              () => {
+                console.log("OK!")
+              },
+              error1 => {
+                alert("ERROR!!!")
+              }
+            );
+            this.id=null;
+            this.name="";
+            this.price=null;
+            this.category="";
+            console.log(this.listDishes);
+          }else {alert("Категория блюда не введена"); return;}
+        }else {alert("Название блюда не введено"); return;}
+      }else {alert("Цена отрицательна или не введена"); return;}
+    }else {alert("Id не введён или меньше нуля"); return;}
   }
 
   saveDish() {
