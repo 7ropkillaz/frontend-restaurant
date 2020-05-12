@@ -45,6 +45,7 @@ export class AppComponent implements OnInit {
       console.log(data);
       this.listDishes = data
     });
+    this.tableOfDishes.renderRows();
   }
 
   removeDishById(id: number) {
@@ -64,7 +65,7 @@ export class AppComponent implements OnInit {
 
   addDish() {
     let dish: Dish = {id: this.id, name: this.name, price: this.price, category: this.category};
-    if(this.id != null && this.id > 0){
+    if(this.id == null){
       if(this.price > 0){
         if(this.name != "" && this.name != null){
           if(this.category != null && this.category!=""){
@@ -85,11 +86,18 @@ export class AppComponent implements OnInit {
                 alert("ERROR!!!")
               }
             );
+            this.httpService.getData().subscribe((data: Dish[]) => {
+              console.log(data);
+              this.listDishes = data
+            });
+            this.tableOfDishes.renderRows();
             this.id=null;
             this.name="";
             this.price=null;
             this.category="";
             console.log(this.listDishes);
+
+
           }else {alert("Категория блюда не введена"); return;}
         }else {alert("Название блюда не введено"); return;}
       }else {alert("Цена отрицательна или не введена"); return;}
